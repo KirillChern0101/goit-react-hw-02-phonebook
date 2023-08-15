@@ -13,8 +13,6 @@ export class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
   handleChange = e => {
@@ -28,13 +26,20 @@ export class App extends Component {
     const number = e.number;
     const contactsLists = [...this.state.contacts];
 
-    if (contactsLists.findIndex(contact => name === contact.name) !== -1) {
+    const existingContactIndex = contactsLists.findIndex(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+
+    if (existingContactIndex !== -1) {
       alert(`${name} is already in contacts.`);
     } else {
-      contactsLists.push({ name, id, number });
+      const newContact = { name, id, number };
+      contactsLists[contactsLists.length] = newContact;
     }
 
-    this.setState({ contacts: contactsLists });
+    this.setState(prevState => ({
+      contacts: contactsLists,
+    }));
   };
 
   handleDelete = e => {
